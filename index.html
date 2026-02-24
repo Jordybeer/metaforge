@@ -100,6 +100,17 @@
       color: #3ec76e;
       margin-bottom: 0.75rem;
       animation: fadeIn 1.4s ease 0.6s both;
+      white-space: nowrap;
+    }
+
+    .rep-dot {
+      opacity: 0.8;
+      padding: 0 0.35em;
+    }
+
+    .rep-trades {
+      font-weight: 700;
+      color: rgba(255,255,255,0.72);
     }
 
     .subtitle {
@@ -173,7 +184,13 @@
   <div class="content">
     <div class="badge">Arc Raiders · Metaforge</div>
     <h1><span>Trader Profile</span><br \>Local Kiosk</h1>
-    <div class="rep-line" id="rep-line">★ <span id="rep-pct">--</span>% (<span id="rep-count">--</span>)</div>
+
+    <div class="rep-line" id="rep-line">
+      ★ <span id="rep-pct">--</span>% (<span id="rep-count">--</span>)
+      <span class="rep-dot">·</span>
+      <span class="rep-trades"><span id="rep-trades">--</span> trades</span>
+    </div>
+
     <p class="subtitle">Connecting you to the market floor; hold tight.</p>
 
     <div class="redirect-wrap">
@@ -234,6 +251,7 @@
         if (rep && rep.total_ratings !== undefined) {
           document.getElementById('rep-pct').textContent = rep.positive_percentage;
           document.getElementById('rep-count').textContent = rep.total_ratings;
+          document.getElementById('rep-trades').textContent = rep.total_trades;
           document.getElementById('rep-line').style.display = 'block';
         }
       })
