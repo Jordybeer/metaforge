@@ -100,6 +100,33 @@
       animation: fadeIn 1.4s ease 0.7s both;
     }
 
+    /* ── Stats Display ── */
+    .stats-container {
+      margin-bottom: 2rem;
+      animation: fadeIn 1.4s ease 0.8s both;
+      display: none; /* Hidden until loaded */
+    }
+    .stat-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(232, 144, 58, 0.1);
+      border: 1px solid rgba(232, 144, 58, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e8903a;
+    }
+
     /* ── Redirect bar ── */
     .redirect-wrap {
       animation: fadeIn 1.4s ease 1s both;
@@ -144,8 +171,7 @@
       position: fixed;
       bottom: 1.4rem;
       left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+      transform: translateX(-50%);\n      z-index: 10;
       font-size: 0.62rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -163,6 +189,14 @@
     <div class="badge">Arc Raiders · Metaforge</div>
     <h1>Local Kiosk<br /><span>Trader Profile</span></h1>
     <p class="subtitle">Connecting you to the market floor &mdash; hold tight.</p>
+
+    <!-- Reputation Stats -->
+    <div class="stats-container" id="stats">
+      <div class="stat-box">
+        <span class="stat-label">Total Ratings</span>
+        <span class="stat-value" id="rep-count">--</span>
+      </div>
+    </div>
 
     <div class="redirect-wrap">
       <p class="redirect-label">Redirecting</p>
@@ -194,14 +228,12 @@
         y: Math.random() * H,
         r: Math.random() * 1.4 + 0.3,
         vx: (Math.random() - 0.5) * 0.22,
-        vy: -(Math.random() * 0.35 + 0.05),
-        a: Math.random() * 0.5 + 0.1
+        vy: -(Math.random() * 0.35 + 0.05),\n        a: Math.random() * 0.5 + 0.1
       });
     }
 
     function draw() {
-      ctx.clearRect(0, 0, W, H);
-      particles.forEach(p => {
+      ctx.clearRect(0, 0, W, H);\n      particles.forEach(p => {
         p.x += p.vx; p.y += p.vy;
         if (p.y < -4) { p.y = H + 4; p.x = Math.random() * W; }
         ctx.beginPath();
@@ -211,7 +243,22 @@
       });
       requestAnimationFrame(draw);
     }
-    draw();
+    draw();\n
+    /* ── API Fetch ── */
+    // Using ID from user screenshot: f20bddae-78a1-46c3-8070-e5dc498497a9
+    const userId = 'f20bddae-78a1-46c3-8070-e5dc498497a9';
+    fetch(`https://metaforge.app/api/arc-raiders/trade/reputation/${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.reputation && data.reputation.total_ratings !== undefined) {
+          document.getElementById('rep-count').textContent = data.reputation.total_ratings;
+          document.getElementById('stats').style.display = 'block';
+        }
+      })
+      .catch(err => {
+        console.warn('Could not fetch reputation stats:', err);
+        // Silently fail: the stats box remains hidden
+      });
 
     /* ── Redirect countdown ── */
     const DELAY = 5000;
@@ -223,8 +270,7 @@
     function tick(now) {
       const elapsed = now - start;
       const pct     = Math.min((elapsed / DELAY) * 100, 100);
-      bar.style.width = pct + '%';
-      const secs = Math.max(0, Math.ceil((DELAY - elapsed) / 1000));
+      bar.style.width = pct + '%';\n      const secs = Math.max(0, Math.ceil((DELAY - elapsed) / 1000));
       timer.textContent = secs > 0 ? `in ${secs}s` : 'Going…';
       if (elapsed < DELAY) requestAnimationFrame(tick);
       else window.location.replace(dest);
