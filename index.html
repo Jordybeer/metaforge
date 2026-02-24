@@ -225,9 +225,9 @@
     }
     draw();
 
-    /* ── API Fetch ── */
+    /* ── API Fetch via Vercel proxy ── */
     const userId = 'f20bddae-78a1-46c3-8070-e5dc498497a9';
-    fetch(`https://metaforge.app/api/arc-raiders/trade/reputation/${userId}`)
+    fetch(`/api/reputation/${userId}`)
       .then(res => res.json())
       .then(data => {
         const rep = data && data.reputation;

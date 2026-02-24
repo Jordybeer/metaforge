@@ -1,4 +1,13 @@
 {
   "version": 2,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/api/reputation/:userId",
+      "destination": "https://metaforge.app/api/arc-raiders/trade/reputation/:userId"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
