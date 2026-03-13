@@ -90,7 +90,6 @@
 
     h1 span { color: #e8903a; }
 
-    /* ── Reputation line ── */
     .rep-line {
       display: none;
       font-size: clamp(0.85rem, 2vw, 1.1rem);
@@ -163,7 +162,7 @@
     <h1>Local Kiosk</h1>
 
     <div class="rep-line" id="rep-line">
-      ★ <span class="rep-positive" id="rep-positive">--</span>/<span id="rep-total">--</span>
+      ★ <span class="rep-positive"><span id="rep-pct">--</span>% Positive</span>
       <span class="rep-dot">·</span>
       <span class="rep-trades"><span id="rep-trades">--</span> trades</span>
     </div>
@@ -179,7 +178,6 @@
   </div>
 
   <script>
-    /* ── Particles ── */
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     let W, H, particles = [];
@@ -216,22 +214,19 @@
     }
     draw();
 
-    /* ── API Fetch via Vercel proxy ── */
     const userId = 'f20bddae-78a1-46c3-8070-e5dc498497a9';
     fetch(`/api/reputation/${userId}`)
       .then(res => res.json())
       .then(data => {
         const rep = data && data.reputation;
-        if (rep && rep.total_ratings !== undefined) {
-          document.getElementById('rep-positive').textContent = rep.positive_count;
-          document.getElementById('rep-total').textContent = rep.total_ratings;
+        if (rep && rep.positive_percentage !== undefined) {
+          document.getElementById('rep-pct').textContent = rep.positive_percentage;
           document.getElementById('rep-trades').textContent = rep.total_trades;
           document.getElementById('rep-line').style.display = 'block';
         }
       })
       .catch(err => console.warn('Could not fetch reputation stats:', err));
 
-    /* ── Redirect countdown ── */
     const DELAY = 7000;
     const bar   = document.getElementById('bar');
     const timer = document.getElementById('timer');
