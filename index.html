@@ -17,8 +17,8 @@
       font-family: 'Inter', sans-serif;
       background: #080a0c;
       color: #fff;
-      height: 100dvh;
-      overflow: hidden;
+      min-height: 100dvh;
+      overflow-x: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -56,7 +56,7 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: clamp(1.25rem, 3.5vw, 2.25rem);
+      padding: clamp(1.25rem, 5vw, 2.25rem) clamp(1rem, 6vw, 2.25rem);
       max-width: 720px;
       width: 100%;
       animation: fadeIn 1.4s ease forwards;
@@ -69,7 +69,7 @@
 
     .badge {
       display: inline-block;
-      font-size: clamp(0.9rem, 2.5vw, 0.72rem);
+      font-size: clamp(0.65rem, 2.5vw, 0.72rem);
       font-weight: 600;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -82,7 +82,7 @@
     }
 
     h1 {
-      font-size: clamp(1rem, 5vw, 2.5rem);
+      font-size: clamp(1.4rem, 5vw, 2.5rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.3;
@@ -98,7 +98,7 @@
     /* ── Reputation line ── */
     .rep-line {
       display: none;
-      font-size: clamp(1.05rem, 2.8vw, 1.7rem);
+      font-size: clamp(0.95rem, 2.8vw, 1.7rem);
       font-weight: 700;
       letter-spacing: -0.01em;
       color: #3ec76e;
@@ -106,6 +106,8 @@
       animation: fadeIn 1.4s ease 0.6s both;
       line-height: 1.15;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .rep-dot {
@@ -119,7 +121,7 @@
     }
 
     .subtitle {
-      font-size: clamp(0.9rem, 2.4vw, 1.05rem);
+      font-size: clamp(0.85rem, 2.4vw, 1.05rem);
       font-weight: 300;
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.05em;
@@ -133,7 +135,7 @@
     }
 
     .redirect-label {
-      font-size: clamp(0.68rem, 1.6vw, 0.75rem);
+      font-size: clamp(0.65rem, 1.6vw, 0.75rem);
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.3);
@@ -165,9 +167,15 @@
       letter-spacing: 0.1em;
     }
 
-    /* Small phones: allow rep line to wrap if needed */
-    @media (max-width: 360px) {
-      .rep-line { white-space: normal; }
+    /* Small phones */
+    @media (max-width: 480px) {
+      .rep-line { white-space: normal; text-overflow: unset; overflow: visible; }
+      .content { padding: 1.25rem 1rem; }
+    }
+
+    /* Tablets */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .content { padding: 1.75rem 1.5rem; }
     }
   </style>
 </head>
@@ -183,7 +191,7 @@
     <div class="rep-line" id="rep-line">
       ★ <span id="rep-pct">--</span>% (<span id="rep-count">--</span>)
       <span class="rep-dot">·</span>
-      <span class="rep-trades">--</span id="rep-trades">span> trades</span>
+      <span class="rep-trades" id="rep-trades">--</span> trades
     </div>
 
     <p class="subtitle">Connecting you to the marketplace.</p>
