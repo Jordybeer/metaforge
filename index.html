@@ -24,7 +24,6 @@
       justify-content: center;
     }
 
-    /* ── Background image ── */
     .bg {
       position: fixed;
       inset: 0;
@@ -43,7 +42,6 @@
       );
     }
 
-    /* ── Particle canvas ── */
     canvas {
       position: fixed;
       inset: 0;
@@ -51,7 +49,6 @@
       pointer-events: none;
     }
 
-    /* ── Content ── */
     .content {
       position: relative;
       z-index: 10;
@@ -69,7 +66,7 @@
 
     .badge {
       display: inline-block;
-      font-size: clamp(0.65rem, 2.5vw, 0.72rem);
+      font-size: clamp(0.65rem, 2vw, 0.75rem);
       font-weight: 600;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -91,34 +88,22 @@
       animation: fadeIn 1.4s ease 0.5s both;
     }
 
-    h1 span {
-      color: #e8903a;
-    }
+    h1 span { color: #e8903a; }
 
     /* ── Reputation line ── */
     .rep-line {
       display: none;
-      font-size: clamp(0.95rem, 2.8vw, 1.7rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: #3ec76e;
-      margin-bottom: clamp(0.7rem, 2.2vw, 1.1rem);
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: clamp(0.9rem, 2.5vw, 1.2rem);
       animation: fadeIn 1.4s ease 0.6s both;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.4;
     }
 
-    .rep-dot {
-      opacity: 0.8;
-      padding: 0 0.35em;
-    }
-
-    .rep-trades {
-      font-weight: 700;
-      color: rgba(255,255,255,0.72);
-    }
+    .rep-positive { color: #e8903a; font-weight: 700; }
+    .rep-dot { opacity: 0.4; padding: 0 0.4em; }
+    .rep-trades { color: rgba(255,255,255,0.5); font-weight: 400; }
 
     .subtitle {
       font-size: clamp(0.85rem, 2.4vw, 1.05rem);
@@ -129,21 +114,12 @@
       animation: fadeIn 1.4s ease 0.7s both;
     }
 
-    /* ── Redirect bar ── */
     .redirect-wrap {
       animation: fadeIn 1.4s ease 1s both;
     }
 
-    .redirect-label {
-      font-size: clamp(0.65rem, 1.6vw, 0.75rem);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: 0.65rem;
-    }
-
     .bar-track {
-      width: min(360px, 80vw);
+      width: min(280px, 70vw);
       height: 2px;
       background: rgba(255,255,255,0.1);
       border-radius: 2px;
@@ -167,13 +143,11 @@
       letter-spacing: 0.1em;
     }
 
-    /* Small phones */
     @media (max-width: 480px) {
-      .rep-line { white-space: normal; text-overflow: unset; overflow: visible; }
+      .rep-line { white-space: normal; }
       .content { padding: 1.25rem 1rem; }
     }
 
-    /* Tablets */
     @media (min-width: 481px) and (max-width: 768px) {
       .content { padding: 1.75rem 1.5rem; }
     }
@@ -189,19 +163,18 @@
     <h1>Local Kiosk</h1>
 
     <div class="rep-line" id="rep-line">
-      ★ <span id="rep-pct">--</span>% (<span id="rep-count">--</span>)
+      ★ <span class="rep-positive" id="rep-positive">--</span>/<span id="rep-total">--</span>
       <span class="rep-dot">·</span>
-      <span class="rep-trades" id="rep-trades">--</span> trades
+      <span class="rep-trades"><span id="rep-trades">--</span> trades</span>
     </div>
 
     <p class="subtitle">Connecting you to the marketplace.</p>
 
     <div class="redirect-wrap">
-      <p class="redirect-label">Redirecting</p>
       <div class="bar-track">
         <div class="bar-fill" id="bar"></div>
       </div>
-      <p class="countdown" id="timer">in 5s</p>
+      <p class="countdown" id="timer">in 7s</p>
     </div>
   </div>
 
@@ -250,8 +223,8 @@
       .then(data => {
         const rep = data && data.reputation;
         if (rep && rep.total_ratings !== undefined) {
-          document.getElementById('rep-pct').textContent = rep.positive_percentage;
-          document.getElementById('rep-count').textContent = rep.total_ratings;
+          document.getElementById('rep-positive').textContent = rep.positive_count;
+          document.getElementById('rep-total').textContent = rep.total_ratings;
           document.getElementById('rep-trades').textContent = rep.total_trades;
           document.getElementById('rep-line').style.display = 'block';
         }
